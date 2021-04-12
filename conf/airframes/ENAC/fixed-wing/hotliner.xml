@@ -51,7 +51,8 @@
       <define name="USE_GPS_UBX_RTCM" value="FALSE"/>
     </module>
 
-    <module name="control" type="new"/>
+    <!-- <module name="control" type="new"/> -->
+    <module name="control" type="energyadaptive"/>
     <module name="navigation"/>
 
     <module name="air_data"> 
@@ -242,6 +243,47 @@
     <define name="AUTO_PITCH_MIN_PITCH" value="-30" unit="deg"/>
 
     <define name="PITCH_TRIM" value="0." unit="deg"/>
+
+    <!-- airspeed control -->
+    <define name="AUTO_AIRSPEED_SETPOINT" value="15.0" unit="m/s"/>
+    <define name="AUTO_AIRSPEED_THROTTLE_PGAIN" value="0.12" unit="%/(m/s)"/>
+    <define name="AUTO_AIRSPEED_THROTTLE_DGAIN" value="0.09"/>
+    <define name="AUTO_AIRSPEED_THROTTLE_IGAIN" value="0.02"/>
+    <define name="AUTO_AIRSPEED_PITCH_PGAIN" value="0.12" unit="degree/(m/s)"/>
+    <define name="AUTO_AIRSPEED_PITCH_DGAIN" value="0.0"/>
+    <define name="AUTO_AIRSPEED_PITCH_IGAIN" value="0.06"/>
+
+    <define name="AIRSPEED_MAX" value="23.0" unit="m/s"/>
+    <define name="AIRSPEED_MIN" value="10.0" unit="m/s"/>
+    <define name="STALL_AIRSPEED" value="10.0" unit="m/s"/>
+
+    <!-- pitch trim -->
+    <define name="PITCH_LOITER_TRIM" value="0." unit="deg"/> <!-- Non ETECS -->
+    <define name="PITCH_DASH_TRIM" value="0." unit="deg"/> <!-- Non ETECS -->
+
+    <!-- groundspeed control -->
+    <define name="AUTO_GROUNDSPEED_SETPOINT" value="5.0" unit="m/s"/>
+    <define name="AUTO_GROUNDSPEED_PGAIN" value="0.8"/>
+    <define name="AUTO_GROUNDSPEED_IGAIN" value="0.2"/>
+
+    <define name="AIRSPEED_PGAIN" value="0.19"/>
+
+        <!-- ============= ETECS ============= -->
+    <define name="ENERGY_TOT_PGAIN" value="0.35"/> <!-- TODO: Determine -->
+    <define name="ENERGY_TOT_IGAIN" value="0.20"/> <!-- TODO: Determine -->
+    <define name="ENERGY_DIFF_PGAIN" value="0.40"/> <!-- TODO: Determine -->
+    <define name="ENERGY_DIFF_IGAIN" value="0.10"/> <!-- TODO: Determine -->
+
+    <define name="GLIDE_RATIO" value="11."/> <!-- 7 to 1 --> <!-- TODO: Determine default but also with heavier batt -->
+
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_PGAIN" value="0.06"/>
+    <define name="AUTO_THROTTLE_OF_AIRSPEED_IGAIN" value="0.01"/>
+
+    <define name="AUTO_PITCH_OF_AIRSPEED_PGAIN" value="0.01"/> <!-- TODO: Determine -->
+    <define name="AUTO_PITCH_OF_AIRSPEED_IGAIN" value="0.003"/> <!-- TODO: Determine -->
+    <define name="AUTO_PITCH_OF_AIRSPEED_DGAIN" value="0.03"/> <!-- TODO: Determine -->
+
+
   </section>
 
   <section name="HORIZONTAL CONTROL" prefix="H_CTL_">
