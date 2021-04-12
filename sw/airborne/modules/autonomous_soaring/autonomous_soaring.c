@@ -60,6 +60,10 @@ static int sampling;
 #define SMARTPROBE_AOA_COEFF 0.85
 #endif
 
+#ifndef SMARTPROBE_DT_SAMPLE
+#define SMARTPROBE_DT_SAMPLE 1
+#endif
+
 struct Soaring_states soaring_states;
 struct Smartprobe smartprobe;
 struct Soaring_coeffs soaring_coeffs;
@@ -87,7 +91,7 @@ void soaring_init(void) {
   wx_old = 0.0;
   wz_old = 0.0;
   last_periodic_time = 0;
-  soaring_coeffs.sample_nr = 1;
+  soaring_coeffs.sample_nr = SMARTPROBE_DT_SAMPLE;
   soaring_coeffs.aoa_coeff = SMARTPROBE_AOA_COEFF;
   soaring_coeffs.aoa_offset = SMARTPROBE_AOA_OFFSET;
   sampling = 0;
@@ -124,6 +128,17 @@ static inline void soaring_run_step(void){
   soaring_states.d_wz = (soaring_states.wz - wz_old) / soaring_states.dt;
   wx_old = soaring_states.wx;
   wz_old = soaring_states.wz;
+  
+  float gama_sign = 1.;
+  if (soaring_states.gama < 0){
+    gama_sign = -1.0;
+  } else {
+    gama_sign = 1.0;
+  }
+
+  soaring_states.p_w = -soaring_states.d_wx*(-va*cosf(soaring_states.gama)*gama_sign);
+  // -d_wx*(-vel * np.sign(gamma) * cos(gamma) )
+
   // if (va > 5.0f){
   //   soaring_states.theta_cmd = gust_gains.p_wx*soaring_states.wx + gust_gains.d_wx*d_wx + gust_gains.p_wz*soaring_states.wz + gust_gains.d_wz*d_wz; // stateGetBodyRates_f()->q // just to try for now...
   // } else {
