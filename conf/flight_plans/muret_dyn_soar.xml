@@ -3,10 +3,11 @@
 <flight_plan alt="260" ground_alt="185" lat0="43.46223" lon0="1.27289" max_dist_from_home="1500" name="Basic" security_height="25">
   <header>
 #include "subsystems/datalink/datalink.h"
-</header>
+  </header>
   <waypoints>
     <waypoint name="HOME" x="0" y="0"/>
     <waypoint name="STDBY" x="49.5" y="100.1"/>
+    <waypoint name="ELLIPSE" x="20.0" y="80.0"/>
     <waypoint name="1" x="10.1" y="189.9"/>
     <waypoint name="2" x="132.3" y="139.1"/>
     <waypoint name="MOB" x="137.0" y="-11.6"/>
@@ -20,7 +21,8 @@
   </waypoints>
 
   <variables>
-    <variable var="circle_alt" init="440" min="200" max="600" step="1"/>
+    <variable init="0" max="100" min="0" step="5" var="ell_delta"/>
+    <variable var="circle_alt" init="240" min="200" max="600" step="1"/>
     <variable var="inclination_height" init="30" min="0" max="120" step="1"/>
     <variable var="inclination_start_angle" init="-100" min="-180" max="180" step="1"/>
     <variable var="angle_ps" init="0" min="-180" max="179" step="1"/>
@@ -29,9 +31,15 @@
     <variable var="throttle_setpoint" min="0." max="1." step="0.01" init="0.25"/>
   </variables>
 
+  <modules> 
+    <module name="gvf_module"/>
+    <module name="gvf_parametric"/>
+  </modules>
+
   <exceptions>
     <!--exception cond="datalink_time > 22" deroute="Standby"/-->
   </exceptions>
+
   <blocks>
     <block name="Wait GPS">
       <set value="1" var="autopilot.kill_throttle"/>
@@ -61,10 +69,12 @@
     <block name="Inclined_Circle">
       <circle radius="nav_radius" wp="STDBY" alt="circle_alt + inclination_height*sinf(RadOfDeg(inclination_start_angle + NavCircleQdr()))"/>
     </block>
+    <block name="GVF_3D_ellipse">
+      <call fun="gvf_parametric_3D_ellipse_wp_delta(WP_ELLIPSE,gvf_parametric_3d_ellipse_par.r,flight_altitude-ground_alt,ell_delta,gvf_parametric_3d_ellipse_par.alpha)"/>
+    </block>
     <block name="Oval Thrust Test" strip_button="Oval (wp 1-2)" strip_icon="oval.png" group="base_pattern">
       <oval p1="1" p2="2" radius="nav_radius" vmode="throttle" throttle="throttle_setpoint"/>
     </block>
-
     <block name="Glide auto" strip_button="Glide Auto" group="extra_pattern">
       <for var="i" from="-3" to="0">
         <call_once fun="nav_compute_baseleg(WP_1, WP_2, WP__BASELEG, nav_radius)"/>

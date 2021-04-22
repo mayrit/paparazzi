@@ -37,6 +37,8 @@
       <message name="ESC"                 period="0.9"/>
       <message name="LOGGER_STATUS"       period="5.1"/>
       <message name="WIND_INFO_RET"       period="0.1"/>
+      <message name="GVF"                 period="1"/>
+      <message name="GVF_PARAMETRIC"      period="1"/>
     </mode>
     <mode name="minimal">
       <message name="ALIVE"               period="5"/>
