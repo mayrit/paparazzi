@@ -70,7 +70,7 @@
       <circle radius="nav_radius" wp="STDBY" alt="circle_alt + inclination_height*sinf(RadOfDeg(inclination_start_angle + NavCircleQdr()))"/>
     </block>
     <block name="GVF_3D_ellipse">
-      <call fun="gvf_parametric_3D_ellipse_wp_delta(WP_ELLIPSE,gvf_parametric_3d_ellipse_par.r,flight_altitude-ground_alt,ell_delta,gvf_parametric_3d_ellipse_par.alpha)"/>
+      <call fun="gvf_parametric_3D_ellipse_wp_delta(WP_STDBY,gvf_parametric_3d_ellipse_par.r,flight_altitude-ground_alt,ell_delta,gvf_parametric_3d_ellipse_par.alpha)"/>
     </block>
     <block name="Oval Thrust Test" strip_button="Oval (wp 1-2)" strip_icon="oval.png" group="base_pattern">
       <oval p1="1" p2="2" radius="nav_radius" vmode="throttle" throttle="throttle_setpoint"/>
