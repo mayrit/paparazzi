@@ -227,22 +227,22 @@ void WEAK imu_scale_accel(struct Imu *_imu)
                    IMU_ACCEL_Z_SENS_NUM) / IMU_ACCEL_Z_SENS_DEN;
 }
 
-#if !defined SITL && defined IMU_MAG_X_CURRENT_COEF && defined IMU_MAG_Y_CURRENT_COEF && defined IMU_MAG_Z_CURRENT_COEF
-#include "subsystems/electrical.h"
-void WEAK imu_scale_mag(struct Imu *_imu)
-{
-  struct Int32Vect3 mag_correction;
-  mag_correction.x = (int32_t)(IMU_MAG_X_CURRENT_COEF * (float) electrical.current);
-  mag_correction.y = (int32_t)(IMU_MAG_Y_CURRENT_COEF * (float) electrical.current);
-  mag_correction.z = (int32_t)(IMU_MAG_Z_CURRENT_COEF * (float) electrical.current);
-  _imu->mag.x = (((_imu->mag_unscaled.x - mag_correction.x) - _imu->mag_neutral.x) *
-                 IMU_MAG_X_SIGN * IMU_MAG_X_SENS_NUM) / IMU_MAG_X_SENS_DEN;
-  _imu->mag.y = (((_imu->mag_unscaled.y - mag_correction.y) - _imu->mag_neutral.y) *
-                 IMU_MAG_Y_SIGN * IMU_MAG_Y_SENS_NUM) / IMU_MAG_Y_SENS_DEN;
-  _imu->mag.z = (((_imu->mag_unscaled.z - mag_correction.z) - _imu->mag_neutral.z) *
-                 IMU_MAG_Z_SIGN * IMU_MAG_Z_SENS_NUM) / IMU_MAG_Z_SENS_DEN;
-}
-#elif USE_MAGNETOMETER
+// #if !defined SITL && defined IMU_MAG_X_CURRENT_COEF && defined IMU_MAG_Y_CURRENT_COEF && defined IMU_MAG_Z_CURRENT_COEF
+// #include "subsystems/electrical.h"
+// void WEAK imu_scale_mag(struct Imu *_imu)
+// {
+//   struct Int32Vect3 mag_correction;
+//   mag_correction.x = (int32_t)(IMU_MAG_X_CURRENT_COEF * (float) electrical.current);
+//   mag_correction.y = (int32_t)(IMU_MAG_Y_CURRENT_COEF * (float) electrical.current);
+//   mag_correction.z = (int32_t)(IMU_MAG_Z_CURRENT_COEF * (float) electrical.current);
+//   _imu->mag.x = (((_imu->mag_unscaled.x - mag_correction.x) - _imu->mag_neutral.x) *
+//                  IMU_MAG_X_SIGN * IMU_MAG_X_SENS_NUM) / IMU_MAG_X_SENS_DEN;
+//   _imu->mag.y = (((_imu->mag_unscaled.y - mag_correction.y) - _imu->mag_neutral.y) *
+//                  IMU_MAG_Y_SIGN * IMU_MAG_Y_SENS_NUM) / IMU_MAG_Y_SENS_DEN;
+//   _imu->mag.z = (((_imu->mag_unscaled.z - mag_correction.z) - _imu->mag_neutral.z) *
+//                  IMU_MAG_Z_SIGN * IMU_MAG_Z_SENS_NUM) / IMU_MAG_Z_SENS_DEN;
+// }
+// #elif USE_MAGNETOMETER
 void WEAK imu_scale_mag(struct Imu *_imu)
 {
   _imu->mag.x = ((_imu->mag_unscaled.x - _imu->mag_neutral.x) * IMU_MAG_X_SIGN *
@@ -252,6 +252,6 @@ void WEAK imu_scale_mag(struct Imu *_imu)
   _imu->mag.z = ((_imu->mag_unscaled.z - _imu->mag_neutral.z) * IMU_MAG_Z_SIGN *
                  IMU_MAG_Z_SENS_NUM) / IMU_MAG_Z_SENS_DEN;
 }
-#else
-void WEAK imu_scale_mag(struct Imu *_imu __attribute__((unused))) {}
-#endif /* MAG_x_CURRENT_COEF */
+// #else
+// void WEAK imu_scale_mag(struct Imu *_imu __attribute__((unused))) {}
+// #endif /* MAG_x_CURRENT_COEF */
